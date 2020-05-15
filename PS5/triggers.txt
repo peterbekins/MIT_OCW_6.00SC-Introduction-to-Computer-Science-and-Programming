@@ -1,0 +1,27 @@
+# trigger file - if you've done through part 11 but no stories are popping
+#  up, you should edit this file to contain triggers that will fire on current
+#  news stories!
+
+# title trigger named t1
+t1 TITLE Pence
+
+# subject trigger named t2
+t2 SUBJECT Texas
+
+# phrase trigger named t3
+t3 PHRASE Supreme Court
+
+# phrase trigger named t4
+t4 PHRASE New York City
+
+# phrase trigger named t5
+t5 PHRASE COVID-19
+
+# composite trigger named t4
+t6 AND t2 t3
+
+# composite trigger named t4
+t7 OR t2 t3
+
+# the trigger set contains t1 and t4
+ADD t1 t3 t4 t6 t7

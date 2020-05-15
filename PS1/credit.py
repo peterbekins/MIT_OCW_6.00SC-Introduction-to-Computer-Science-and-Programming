@@ -1,24 +1,28 @@
 import math
 
 # Problem Set 1: Calculating Credit Card Debt
+# Name: Peter Bekins
+# Date: 4/26/20
 
 # Problem 1. Write a program to calculate the credit card balance after one year 
 # if a person only pays the minimum monthly payment required by the credit card company 
 # each month. 
 
 def endBalance():
-	"""
-    Test Case 1, use balance 4800, interest rate 0.2, min monthly payment 0.02
-    RESULT:	Total amount paid: $1131.12; Remaining balance: $4611.46
 
-    Test Case 2, use balance 4800, interest rate 0.2, min monthly payment 0.04
-    RESULT:	Total amount paid: $2030.15; Remaining balance: $3615.74
-    """
+	"""
+	Test Case 1, use balance 4800, interest rate 0.2, min monthly payment 0.02
+	RESULT:	Total amount paid: $1131.12; Remaining balance: $4611.46
+	
+	Test Case 2, use balance 4800, interest rate 0.2, min monthly payment 0.04
+	RESULT:	Total amount paid: $2030.15; Remaining balance: $3615.74
+	"""
+	
 	balance = float(input("Enter the outstanding balance on your credit card:"))
 	rate = float(input("Enter the annual credit card interest rate as a decimal:"))
 	payment = float(input("Enter the minimum monthly payment rate as a decimal:"))
 	total = 0
-
+	
 	for i in range(1, 13):
 		min_payment = payment * balance
 		interest = rate/12 * balance
@@ -30,12 +34,12 @@ def endBalance():
 		print("Minimum monthly payment: $%.2f" %(min_payment))
 		print("Principal Paid: $%.2f" %(principal))
 		print("Remaining balnce: $%.2f" %(balance))
-
+		
 	print("RESULT")
 	print("Total amount paid: $%.2f" %(total))
 	print("Remaining balance: $%.2f" %(balance))
-
-# endBalance()
+	
+endBalance()
 
 # Problem 2. Write a program that calculates the minimum fixed monthly payment needed
 # in order pay off a credit card balance within 12 months. We will not be dealing
@@ -46,7 +50,7 @@ def minPayment1():
 	"""
 	Test Case 1, use balance 1200 and interest rate 0.18
 	RESULT: Monthly payment: 120; Number of months needed: 11; Balance: -10.05
-
+	
 	Test Case 2, use balance 32000  and interest rate 0.2
 	RESULT:	Monthly payment: 2970; Number of months needed: 12; Balance: -74.98
 	"""
@@ -74,14 +78,12 @@ def minPayment1():
 			if test_balance <= 0:
 				break
 
-
-
 	print("RESULT")
 	print("Monthly payment to pay off debt in 1 year:$%.2f" % (payment))
 	print("Number of months needed: " + str(month))
 	print("Balance: %.2f" % (test_balance))
 
-#minPayment1()
+minPayment1()
 
 # Problem 3. Write a program that calculates the minimum fixed monthly payment needed
 # in order pay off a credit card balance within 12 months. We will not be dealing with
@@ -97,9 +99,11 @@ def minPayment2():
 	Test Case 2, use balance 999999  and interest rate 0.18
 	RESULT:	Monthly payment: 91679.91; Number of months needed: 12; Balance: -.128
 	"""
+	
 	balance = float(input("Enter the outstanding balance on your credit card:"))
 	rate = float(input("Enter the annual credit card interest rate as a decimal:"))
 	monthly_rate = rate/12
+	
 	# Initialize starting values for variables
 	low_bound = balance/12
 	high_bound = (balance * (1 + monthly_rate)**12)/12
@@ -125,7 +129,7 @@ def minPayment2():
 			if test_balance <= 0:
 				break
 
-		# Test answer and adjust bounds as needed
+		# If solution is found, break, otherwise adjust bounds before next loop 
 		if (test_balance <= 0) and (payment - low_bound < 0.03):
 			print("RESULT")
 			print("Monthly payment to pay off debt in 1 year:$%.2f" %(payment))

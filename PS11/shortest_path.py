@@ -160,61 +160,37 @@ def bruteForceSearch(digraph, start, end, maxTotalDist, maxDistOutdoors):
 # Problem 4: Finding the Shortest Path using Optimized Search Method
 #
 
-def dfSearch(graph, start, end, maxTotalDist, maxDistOutdoors, path = [], memo = None):
+def dfSearch(graph, start, end, maxTotalDist, maxDistOutdoors, path = [], shortPath = None):
 
     """
-    This walks every possible path between original start and end.
-    Memo keeps track of shortest path.
+    This walks each possible path between start and end.
+    
+    MaxTotalDist is the initial value for shortest path length.
 
     If any partial path hits the current shortest length,
     it gives up and backtracks to the next option.
 
-    If any partial path hits maxTotalDist or maxDistOutdoors, it gives up
+    If any partial path hits maxDistOutdoors, it gives up
     and backtracks to the next option.
 
-    returns list of tuples (path, length)
+    returns best path as list of nodes
     """
-
-    # Initialize memo each time search function is first called
-    if memo == None:
-        memo = {}
 
     path = path + [start]
 
     if start == end:
-        # Reached the destination
-        length, outdoor = pathLength(graph, path)
-        key = 'shortest'
-        # set shortest length for AE in memo
-        if key in memo:
-            shortest = memo[key]
-            if (length < shortest) and (length <= maxTotalDist) and (outdoor <= maxDistOutdoors):
-                memo[key] = length
-        else:
-            memo[key] = length
+        return path
 
-        if (length <= maxTotalDist) and (outdoor <= maxDistOutdoors):
-            return [path]
-
-    if not (graph.hasNode(start)):
-        return []
-
-    short = None
-    paths = []
     for node in graph.childrenOf(start):
         if node[0] not in path:
-            # Check shortest length to give up on path
-            length, outdoor = pathLength(graph, path)
-            if 'shortest' in memo:
-                short = memo['shortest']
-            if (short != None and length >= short) or (outdoor > maxDistOutdoors) or (length > maxTotalDist):
-                continue
-            else:
-                newPath = dfSearch(graph, node[0], end, maxTotalDist, maxDistOutdoors, path, memo)
-                for p in newPath:
-                    paths.append(p)
-
-    return paths
+            newPath = dfSearch2(graph, node[0], end, maxTotalDist, maxDistOutdoors, path, shortPath)
+            if newPath is not None:
+                total, outdoors = pathLength(graph, newPath)
+                if total <= maxTotalDist and outdoors <= maxDistOutdoors:
+                    shortPath = newPath
+                    maxTotalDist = total
+			
+    return shortPath
 
 def directedDFS(digraph, start, end, maxTotalDist, maxDistOutdoors):
     """
@@ -245,25 +221,7 @@ def directedDFS(digraph, start, end, maxTotalDist, maxDistOutdoors):
     start_node = digraph.getNode(start)
     end_node = digraph.getNode(end)
 
-    # 1. Call dfSearch to find all possible paths that fit constraints
-
-    paths = dfSearch(digraph, start_node, end_node, maxTotalDist, maxDistOutdoors)
-
-    # 2. Select shortest path under constraints
-    shortPath = None
-    shortLength = None
-
-    # print "DFS found " + str(len(paths)) + " paths"
-
-    for path in paths:
-        # print path
-        totLength, outLength = pathLength(digraph, path)
-        if (shortLength == None):
-            shortLength = totLength
-            shortPath = path
-        elif (totLength < shortLength):
-            shortLength = totLength
-            shortPath = path
+    shortPath = dfSearch(digraph, start_node, end_node, maxTotalDist, maxDistOutdoors)
 
     if shortPath == None:
         raise ValueError

@@ -183,7 +183,7 @@ def dfSearch(graph, start, end, maxTotalDist, maxDistOutdoors, path = [], shortP
 
     for node in graph.childrenOf(start):
         if node[0] not in path:
-            newPath = dfSearch2(graph, node[0], end, maxTotalDist, maxDistOutdoors, path, shortPath)
+            newPath = dfSearch(graph, node[0], end, maxTotalDist, maxDistOutdoors, path, shortPath)
             if newPath is not None:
                 total, outdoors = pathLength(graph, newPath)
                 if total <= maxTotalDist and outdoors <= maxDistOutdoors:
